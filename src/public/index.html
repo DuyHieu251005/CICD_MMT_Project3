@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Launch | CI/CD Pipeline</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent: #00f2ff;
+            --font-mono: 'SF Mono', 'Fira Code', 'Roboto Mono', monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            z-index: 1;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .timer {
+            display: flex;
+            gap: 2rem;
+            font-family: var(--font-mono);
+        }
+
+        .unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .value {
+            font-size: 6rem;
+            font-weight: 700;
+            line-height: 1;
+            position: relative;
+        }
+
+        /* Glitch Effect on Values */
+        .value::after {
+            content: attr(data-value);
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateX(-2px);
+            mix-blend-mode: overlay;
+        }
+
+        .value:hover::after {
+            opacity: 0.7;
+        }
+
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        .status-bar {
+            margin-top: 4rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; box-shadow: 0 0 5px var(--accent); }
+            50% { opacity: 0.5; box-shadow: 0 0 20px var(--accent); }
+            100% { opacity: 1; box-shadow: 0 0 5px var(--accent); }
+        }
+
+        @media (max-width: 768px) {
+            .value { font-size: 3rem; }
+            .timer { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    
+    <div class="container">
+        <h1>System Launch Sequence</h1>
+        
+        <div class="timer" id="countdown">
+            <div class="unit">
+                <span class="value" data-value="00" id="hours">00</span>
+                <span class="label">Hours</span>
+            </div>
+            <div class="unit">
+                <span class="value" data-value="00" id="minutes">00</span>
+                <span class="label">Minutes</span>
+            </div>
+            <div class="unit">
+                <span class="value" data-value="00" id="seconds">00</span>
+                <span class="label">Seconds</span>
+            </div>
+            <div class="unit">
+                <span class="value" style="color: var(--accent);" data-value="00" id="millis">00</span>
+                <span class="label">MS</span>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="indicator">
+                <div class="dot"></div>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <span>DEPLOYMENT: STABLE</span>
+            <span>VER: 3.0.0</span>
+        </div>
+    </div>
+
+    <script>
+        // Set countdown to next midnight (or 24h cycle)
+        const target = new Date();
+        target.setHours(24, 0, 0, 0); // Next midnight
+
+        function updateTimer() {
+            const now = new Date();
+            let diff = target - now;
+
+            // Reset if passed
+            if (diff < 0) {
+                target.setDate(target.getDate() + 1);
+                diff = target - now;
+            }
+
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            const ms = Math.floor((diff % 1000) / 10); // 2 digits
+
+            const hStr = h.toString().padStart(2, '0');
+            const mStr = m.toString().padStart(2, '0');
+            const sStr = s.toString().padStart(2, '0');
+            const msStr = ms.toString().padStart(2, '0');
+
+            document.getElementById('hours').innerText = hStr;
+            document.getElementById('hours').setAttribute('data-value', hStr);
+            
+            document.getElementById('minutes').innerText = mStr;
+            document.getElementById('minutes').setAttribute('data-value', mStr);
+            
+            document.getElementById('seconds').innerText = sStr;
+            document.getElementById('seconds').setAttribute('data-value', sStr);
+            
+            document.getElementById('millis').innerText = msStr;
+            document.getElementById('millis').setAttribute('data-value', msStr);
+
+            requestAnimationFrame(updateTimer);
+        }
+
+        updateTimer();
+    </script>
+</body>
+</html>

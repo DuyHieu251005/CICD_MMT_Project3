@@ -2,15 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Hello from CI/CD Pipeline!',
-    project: 'CSC11004 - Advanced Computer Networks',
-    status: 'Success',
-    timestamp: new Date().toISOString()
-  });
-});
+const path = require('path');
 
+// Serve static files from 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Health check API for Docker/Jenkins
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy' });
 });
