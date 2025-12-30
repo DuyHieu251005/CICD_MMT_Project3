@@ -8,10 +8,12 @@ Group Members:
 1. Student ID: 23127365
    Full Name:  Kiều Duy Hiếu
    Email:      kdhieu23@clc.fitus.edu.vn
+   Phone:      0987654321
 
 2. Student ID: 23127537
    Full Name:  Đỗ Hiếu Quang
    Email:      dhquang23@clc.fitus.edu.vn
+   Phone:      0987654321
 ------------------------------------------------------
 
 Project Structure:

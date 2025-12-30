@@ -62,7 +62,7 @@ git commit -m "Initial commit"
 
 ### 3.2. Push code lên GitHub
 ```bash
-git remote add origin https://github.com/MSSV/MMT_CICD.git
+git remote add origin https://github.com/DuyHieu251005/CICD_MMT_Project3.git
 git branch -M main
 git push -u origin main
 ```
@@ -107,7 +107,7 @@ docker exec jenkins-cicd cat /var/jenkins_home/secrets/initialAdminPassword
 3. Trong phần **Pipeline**:
    - Definition: **Pipeline script from SCM**
    - SCM: **Git**
-   - Repository URL: `https://github.com/MSSV/MMT_CICD.git`
+   - Repository URL: `https://github.com/DuyHieu251005/CICD_MMT_Project3.git`
    - Credentials: Thêm GitHub credentials (username + token)
    - Branch: `*/main`
 4. Click **Save**
