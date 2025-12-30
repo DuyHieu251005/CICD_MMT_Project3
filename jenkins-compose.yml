@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins-cicd
+    restart: unless-stopped
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"   # Jenkins Web UI
+      - "50000:50000" # Jenkins Agent
+    volumes:
+      # Persist Jenkins data
+      - jenkins_home:/var/jenkins_home
+      # Mount Docker socket (Docker-outside-of-Docker)
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount Docker CLI
+      - /usr/bin/docker:/usr/bin/docker
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
+
+volumes:
+  jenkins_home:
+    driver: local
