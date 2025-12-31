@@ -1,228 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Launch | CI/CD Pipeline</title>
+    <title>Minecraft Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #050505;
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --accent: #00f2ff;
-            --font-mono: 'SF Mono', 'Fira Code', 'Roboto Mono', monospace;
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: var(--bg);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            height: 100vh;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: 'VT323', monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Ambient Glow */
-        .glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            pointer-events: none;
+            height: 100vh;
+            margin: 0;
+            background-image:
+                linear-gradient(45deg, #2c2c2c 25%, transparent 25%, transparent 75%, #2c2c2c 75%, #2c2c2c),
+                linear-gradient(45deg, #2c2c2c 25%, transparent 25%, transparent 75%, #2c2c2c 75%, #2c2c2c);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
         }
 
         .container {
-            z-index: 1;
             text-align: center;
-            opacity: 0;
-            animation: fadeIn 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            border: 4px solid #787878;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 3rem 4rem;
+            box-shadow:
+                inset 4px 4px 0px 0px #3d3d3d,
+                inset -4px -4px 0px 0px #000000,
+                10px 10px 0px 0px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
         }
 
         h1 {
-            font-weight: 300;
-            letter-spacing: 0.2em;
+            font-size: 3.5rem;
+            color: #55FF55;
+            /* Minecraft Green */
+            text-shadow: 4px 4px 0px #000;
+            margin-bottom: 2rem;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
+            letter-spacing: 2px;
         }
 
-        .timer {
-            display: flex;
-            gap: 2rem;
-            font-family: var(--font-mono);
+        .countdown-box {
+            background: #333;
+            border: 4px solid #000;
+            display: inline-block;
+            padding: 1rem 3rem;
+            margin: 1rem 0;
+            min-width: 200px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
         }
 
-        .unit {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .value {
-            font-size: 6rem;
-            font-weight: 700;
+        .countdown {
+            font-size: 8rem;
+            color: #FF5555;
+            /* Minecraft Red */
+            text-shadow: 6px 6px 0px #3d0000;
             line-height: 1;
-            position: relative;
         }
 
-        /* Glitch Effect on Values */
-        .value::after {
-            content: attr(data-value);
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--accent);
-            opacity: 0;
-            transform: translateX(-2px);
-            mix-blend-mode: overlay;
+        .controls {
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
         }
 
-        .value:hover::after {
-            opacity: 0.7;
+        input[type="number"] {
+            background-color: #000;
+            border: 2px solid #a0a0a0;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            width: 80px;
+            text-align: center;
+            box-shadow: inset 2px 2px 0 #000;
         }
 
-        .label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-secondary);
+        button {
+            background-color: #999;
+            border: 2px solid #000;
+            border-top-color: #ddd;
+            border-left-color: #ddd;
+            color: #000;
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+            border-top-color: #999;
+            border-left-color: #999;
+        }
+
+        button:hover {
+            background-color: #bbb;
+        }
+
+        .info {
+            margin-top: 2rem;
+            font-size: 1.5rem;
+            color: #FFFF55;
+            /* Minecraft Yellow */
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .note {
+            color: #aaa;
             margin-top: 1rem;
-        }
-
-        .status-bar {
-            margin-top: 4rem;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-        }
-
-        .indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; box-shadow: 0 0 5px var(--accent); }
-            50% { opacity: 0.5; box-shadow: 0 0 20px var(--accent); }
-            100% { opacity: 1; box-shadow: 0 0 5px var(--accent); }
-        }
-
-        @media (max-width: 768px) {
-            .value { font-size: 3rem; }
-            .timer { gap: 1rem; }
+            font-size: 1.2rem;
         }
     </style>
 </head>
+
 <body>
-    <div class="glow"></div>
-    
+
     <div class="container">
-        <h1>System Launch Sequence</h1>
-        
-        <div class="timer" id="countdown">
-            <div class="unit">
-                <span class="value" data-value="00" id="hours">00</span>
-                <span class="label">Hours</span>
-            </div>
-            <div class="unit">
-                <span class="value" data-value="00" id="minutes">00</span>
-                <span class="label">Minutes</span>
-            </div>
-            <div class="unit">
-                <span class="value" data-value="00" id="seconds">00</span>
-                <span class="label">Seconds</span>
-            </div>
-            <div class="unit">
-                <span class="value" style="color: var(--accent);" data-value="00" id="millis">00</span>
-                <span class="label">MS</span>
-            </div>
+        <h1>Project Submission</h1>
+
+        <div class="controls">
+            <input type="number" id="timeInput" value="10" min="1" max="999">
+            <button onclick="startCountdown()">START</button>
         </div>
 
-        <div class="status-bar">
-            <div class="indicator">
-                <div class="dot"></div>
-                <span>SYSTEM ONLINE</span>
-            </div>
-            <span>DEPLOYMENT: STABLE</span>
-            <span>VER: 3.0.0</span>
+        <div class="countdown-box">
+            <div id="display" class="countdown">10</div>
         </div>
+
+        <div class="info">
+            <p>23127365 - Kiều Duy Hiếu</p>
+            <p>23127537 - Đỗ Hiếu Quang</p>
+        </div>
+
+        <p class="note">Ready for Deployment...</p>
     </div>
 
     <script>
-        // Set countdown to next midnight (or 24h cycle)
-        const target = new Date();
-        target.setHours(24, 0, 0, 0); // Next midnight
+        let timer;
 
-        function updateTimer() {
-            const now = new Date();
-            let diff = target - now;
+        function startCountdown() {
+            // Clear any existing timer
+            if (timer) clearInterval(timer);
 
-            // Reset if passed
-            if (diff < 0) {
-                target.setDate(target.getDate() + 1);
-                diff = target - now;
-            }
+            // Get value from input
+            let timeLeft = document.getElementById('timeInput').value;
+            const display = document.getElementById('display');
 
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / (1000 * 60)) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            const ms = Math.floor((diff % 1000) / 10); // 2 digits
+            // Initial update
+            display.innerText = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+            display.style.color = "#FF5555"; // Red
 
-            const hStr = h.toString().padStart(2, '0');
-            const mStr = m.toString().padStart(2, '0');
-            const sStr = s.toString().padStart(2, '0');
-            const msStr = ms.toString().padStart(2, '0');
+            // Start interval
+            timer = setInterval(() => {
+                timeLeft--;
 
-            document.getElementById('hours').innerText = hStr;
-            document.getElementById('hours').setAttribute('data-value', hStr);
-            
-            document.getElementById('minutes').innerText = mStr;
-            document.getElementById('minutes').setAttribute('data-value', mStr);
-            
-            document.getElementById('seconds').innerText = sStr;
-            document.getElementById('seconds').setAttribute('data-value', sStr);
-            
-            document.getElementById('millis').innerText = msStr;
-            document.getElementById('millis').setAttribute('data-value', msStr);
+                if (timeLeft >= 0) {
+                    display.innerText = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+                }
 
-            requestAnimationFrame(updateTimer);
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    display.innerText = "GO!";
+                    display.style.color = "#55FF55"; // Green
+                }
+            }, 1000);
         }
-
-        updateTimer();
     </script>
 </body>
+
 </html>
