@@ -1,6 +1,6 @@
 # CI/CD Setup Guide - CSC11004
 
-## 📋 Mục lục
+## Mục lục
 1. [Tổng quan](#1-tổng-quan)
 2. [Cấu hình Git](#2-cấu-hình-git)
 3. [Cấu hình GitHub](#3-cấu-hình-github)
@@ -175,7 +175,7 @@ curl http://localhost:3000
 
 ---
 
-## 📝 Lưu ý quan trọng
+## Lưu ý quan trọng
 
 > [!WARNING]
 > **Trên Windows**, bạn cần dùng **Docker Desktop** và bật **WSL 2 integration**.
@@ -188,7 +188,7 @@ curl http://localhost:3000
 
 ---
 
-## ✅ Checklist hoàn thành
+## Checklist hoàn thành
 
 - [ ] Git đã cấu hình với MSSV
 - [ ] GitHub repo đã tạo và push code

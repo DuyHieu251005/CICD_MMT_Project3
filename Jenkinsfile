@@ -10,14 +10,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo '📥 Checking out source code...'
+                echo 'Checking out source code...'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo '🔨 Building Docker image...'
+                echo 'Building Docker image...'
                 dir('src') {
                     sh "docker build -t ${DOCKER_IMAGE} ."
                 }
@@ -26,7 +26,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo '🧪 Running tests...'
+                echo 'Running tests...'
                 dir('src') {
                     sh '''
                         docker run --rm ${DOCKER_IMAGE} sh -c "npm install --include=dev && npm test"
@@ -37,7 +37,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo '🚀 Deploying application...'
+                echo 'Deploying application...'
                 sh '''
                     # Stop and remove existing container if it exists
                     docker stop ${CONTAINER_NAME} || true
@@ -50,8 +50,8 @@ pipeline {
                         --restart unless-stopped \
                         ${DOCKER_IMAGE}
 
-                    echo "✅ Application deployed successfully!"
-                    echo "🌐 Access at: http://localhost:3000"
+                    echo "Application deployed successfully!"
+                    echo "Access at: http://localhost:3000"
                 '''
             }
         }
@@ -59,13 +59,13 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline completed successfully!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo '❌ Pipeline failed. Check the logs above.'
+            echo 'Pipeline failed. Check the logs above.'
         }
         always {
-            echo '🧹 Cleaning up old images...'
+            echo 'Cleaning up old images...'
             sh 'docker image prune -f || true'
         }
     }
