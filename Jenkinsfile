@@ -1,10 +1,11 @@
 pipeline {
     agent any
-    
+
     triggers {
-        // Kiểm tra thay đổi trên GitHub mỗi phút một lần
-        pollSCM '* * * * *' 
+        pollSCM('* * * * *')
     }
+    
+
 
     environment {
         APP_NAME = 'cicd-demo-app'
