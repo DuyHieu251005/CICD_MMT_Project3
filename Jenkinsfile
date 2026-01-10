@@ -41,6 +41,20 @@ pipeline {
             }
         }
 
+        stage('Push to Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        
+                        sh "docker tag ${DOCKER_IMAGE} duyhieu2005/cicd-demo-app:${BUILD_NUMBER}"
+                        
+                        sh "docker push duyhieu2005/cicd-demo-app:${BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
